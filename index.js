@@ -20,7 +20,7 @@ TwilioWrapper.prototype.call = function(){
         return null;
     }
 
-    this.client.makeCall({
+    return this.client.makeCall({
 	    url: TWIML_RESOURCE_URL,
 	    to: this.customer_number,
 	    from: this.twilio_phone_number
