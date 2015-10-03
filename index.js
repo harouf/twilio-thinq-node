@@ -1,4 +1,4 @@
-var RestClient = require('twilio');
+var twilio = require('twilio');
 
 var TWIML_RESOURCE_URL = "http://cris.viralearnings.com/twiml/get_response";
 
@@ -8,7 +8,7 @@ var TwilioWrapper = function(customer_number, twilio_account_sid, twilio_account
 	this.twilio_account_token = twilio_account_token;
 	this.twilio_phone_number = twilio_phone_number;
 
-	this.client = RestClient(twilio_account_sid, twilio_account_token);
+	this.client = new twilio.RestClient(twilio_account_sid, twilio_account_token);
 };
 
 TwilioWrapper.prototype.isClientValid = function(){
@@ -17,22 +17,13 @@ TwilioWrapper.prototype.isClientValid = function(){
 
 TwilioWrapper.prototype.call = function(){
 	if(!this.isClientValid()) {
-        console.log("Invalid Twilio Account details.");
-        return;
+        return null;
     }
 
-    this.client.calls.create({
+    this.client.makeCall({
 	    url: TWIML_RESOURCE_URL,
 	    to: this.customer_number,
 	    from: this.twilio_phone_number
-	}, function(err, call) {
-		if(call && call.sid)
-		{
-			console.log("Successfully initiated a new call to customer!");
-	    	console.log("Call sid: " + call.sid);
-		}else{
-			console.log(err);
-		}
 	});
 };
 
